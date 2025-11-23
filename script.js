@@ -2,9 +2,9 @@
 const CONFIG = {
     initialCash: 1000,
     initialPrice: 100,
-    volatility: 2.0, // Max random change per tick
-    trend: -0.5,      // Bias: +0.2 means slight upward trend, -0.5 downward, etc.
-    updateInterval: 500, // ms
+    volatility: 5,
+    trend: 0,
+    updateInterval: 500,
     maxHistory: 50
 };
 
@@ -15,13 +15,16 @@ let state = {
     price: CONFIG.initialPrice,
     avgBuyPrice: 0,
     history: [],
-    labels: []
+    labels: [],
+    pointBackgroundColors: [],
+    pointRadii: []
 };
 
 // DOM Elements
 const elCash = document.getElementById('cash-display');
 const elShares = document.getElementById('shares-display');
 const elPrice = document.getElementById('price-display');
+const elFortune = document.getElementById('fortune-display');
 const elTrend = document.getElementById('trend-display');
 const elVol = document.getElementById('vol-display');
 const btnBuy = document.getElementById('btn-buy');
@@ -39,8 +42,9 @@ const chart = new Chart(ctx, {
             borderColor: '#00ff88',
             backgroundColor: 'rgba(0, 255, 136, 0.1)',
             borderWidth: 2,
-            tension: 0.4,
-            pointRadius: 0,
+            tension: 0.1, // Low tension for stability
+            pointRadius: state.pointRadii,
+            pointBackgroundColor: state.pointBackgroundColors,
             fill: true
         }]
     },
@@ -55,7 +59,16 @@ const chart = new Chart(ctx, {
             x: { display: false },
             y: {
                 grid: { color: 'rgba(255, 255, 255, 0.05)' },
-                ticks: { color: 'rgba(255, 255, 255, 0.5)' }
+                beginAtZero: true,
+                min: 0,
+                max: 200,
+                ticks: {
+                    color: 'rgba(255, 255, 255, 0.5)',
+                    stepSize: 20,
+                    callback: function (value) {
+                        return '$' + Math.floor(value);
+                    }
+                }
             }
         },
         animation: { duration: 0 }
@@ -64,7 +77,7 @@ const chart = new Chart(ctx, {
 
 // Helper Functions
 function formatMoney(amount) {
-    return '$' + amount.toFixed(2);
+    return '$' + Math.floor(amount);
 }
 
 function triggerWinEffect() {
@@ -82,9 +95,21 @@ function updateUI() {
     elShares.textContent = state.shares;
     elPrice.textContent = formatMoney(state.price);
 
+    // Fortune Calculation
+    const fortune = state.cash + (state.shares * state.price);
+    elFortune.textContent = formatMoney(fortune);
+
+    if (fortune < CONFIG.initialCash) {
+        elFortune.classList.add('text-red');
+    } else {
+        elFortune.classList.remove('text-red');
+    }
+
     // Update Chart
     chart.data.labels = state.labels;
     chart.data.datasets[0].data = state.history;
+    chart.data.datasets[0].pointBackgroundColor = state.pointBackgroundColors;
+    chart.data.datasets[0].pointRadius = state.pointRadii;
     chart.update();
 
     // Update buttons state
@@ -98,19 +123,29 @@ function updateUI() {
 
 function updatePrice() {
     // Price Logic: Old Price + Random(-Vol, +Vol) + Trend
-    const randomChange = (Math.random() - 0.5) * 2 * CONFIG.volatility;
-    const change = randomChange + CONFIG.trend;
+    const randomChange = Math.round((Math.random() - 0.5) * 2 * CONFIG.volatility);
+    const change = randomChange + Math.round(CONFIG.trend);
 
     state.price += change;
-    if (state.price < 0.01) state.price = 0.01; // Prevent negative price
+
+    // Safety check: Ensure price is a valid number and at least 1
+    if (isNaN(state.price) || state.price < 1) {
+        state.price = 1;
+    }
 
     // Update History
     state.history.push(state.price);
     state.labels.push('');
 
+    // Default marker (none)
+    state.pointBackgroundColors.push('transparent');
+    state.pointRadii.push(0);
+
     if (state.history.length > CONFIG.maxHistory) {
         state.history.shift();
         state.labels.shift();
+        state.pointBackgroundColors.shift();
+        state.pointRadii.shift();
     }
 }
 
@@ -127,6 +162,11 @@ btnBuy.addEventListener('click', () => {
         state.cash -= state.price;
         state.shares += 1;
         state.avgBuyPrice = totalValue / state.shares;
+
+        // Add Buy Marker (Green)
+        const lastIndex = state.pointBackgroundColors.length - 1;
+        state.pointBackgroundColors[lastIndex] = '#00ff88';
+        state.pointRadii[lastIndex] = 6;
 
         updateUI();
     }
@@ -149,6 +189,11 @@ btnSell.addEventListener('click', () => {
         if (state.shares === 0) {
             state.avgBuyPrice = 0;
         }
+
+        // Add Sell Marker (Red)
+        const lastIndex = state.pointBackgroundColors.length - 1;
+        state.pointBackgroundColors[lastIndex] = '#ff0055';
+        state.pointRadii[lastIndex] = 6;
 
         updateUI();
     }
@@ -199,11 +244,15 @@ function resetGame() {
     state.price = CONFIG.initialPrice;
     state.history = [];
     state.labels = [];
+    state.pointBackgroundColors = [];
+    state.pointRadii = [];
 
     // Re-init history
     for (let i = 0; i < CONFIG.maxHistory; i++) {
         state.history.push(CONFIG.initialPrice);
         state.labels.push('');
+        state.pointBackgroundColors.push('transparent');
+        state.pointRadii.push(0);
     }
 
     // Update UI elements that might have changed from config
@@ -226,6 +275,8 @@ function init() {
     for (let i = 0; i < CONFIG.maxHistory; i++) {
         state.history.push(CONFIG.initialPrice);
         state.labels.push('');
+        state.pointBackgroundColors.push('transparent');
+        state.pointRadii.push(0);
     }
 
     elTrend.textContent = CONFIG.trend > 0 ? '+' + CONFIG.trend : CONFIG.trend;
