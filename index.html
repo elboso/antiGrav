@@ -16,47 +16,68 @@
             <div class="stats">
                 <div class="stat-item">
                     <span class="label">CASH</span>
-                    <canvas id="marketChart"></canvas>
+                    <span class="value" id="cash-display">$1000</span>
                 </div>
-                </main>
-
-                <div class="controls">
-                    <button id="btn-sell" class="btn sell">SELL</button>
-                    <button id="btn-buy" class="btn buy">BUY</button>
+                <div class="stat-item">
+                    <span class="label">SHARES</span>
+                    <span class="value" id="shares-display">0</span>
                 </div>
-
-                <div class="config-display">
-                    <small>Trend: <span id="trend-display">0</span> | Volatility: <span
-                            id="vol-display">0</span></small>
+                <div class="stat-item">
+                    <span class="label">PRICE</span>
+                    <span class="value" id="price-display">$100</span>
                 </div>
-
-                <dialog id="settings-modal" class="modal">
-                    <div class="modal-content">
-                        <h2>Settings</h2>
-                        <div class="form-group">
-                            <label for="inp-initial-cash">Initial Cash</label>
-                            <input type="number" id="inp-initial-cash" value="1000">
-                        </div>
-                        <div class="form-group">
-                            <label for="inp-volatility">Volatility</label>
-                            <input type="number" id="inp-volatility" step="0.1" value="2.0">
-                        </div>
-                        <div class="form-group">
-                            <label for="inp-trend">Trend Bias</label>
-                            <input type="number" id="inp-trend" step="0.1" value="-0.5">
-                        </div>
-                        <div class="form-group">
-                            <label for="inp-interval">Update Interval (ms)</label>
-                            <input type="number" id="inp-interval" step="100" value="500">
-                        </div>
-                        <div class="modal-actions">
-                            <button id="btn-save-settings" class="btn buy">Save & Reset</button>
-                            <button id="btn-close-settings" class="btn sell">Cancel</button>
-                        </div>
-                    </div>
-                </dialog>
+                <div class="stat-item">
+                    <span class="label">FORTUNE</span>
+                    <span class="value" id="fortune-display">$1000</span>
+                </div>
+                <div class="stat-item">
+                    <button id="btn-settings" class="btn-icon">⚙️</button>
+                </div>
             </div>
-            <script src="script.js"></script>
+        </header>
+
+        <main>
+            <div class="chart-container">
+                <canvas id="marketChart"></canvas>
+            </div>
+        </main>
+
+        <div class="controls">
+            <button id="btn-sell" class="btn sell">SELL</button>
+            <button id="btn-buy" class="btn buy">BUY</button>
+        </div>
+
+        <div class="config-display">
+            <small>Trend: <span id="trend-display">0</span> | Volatility: <span id="vol-display">0</span></small>
+        </div>
+
+        <dialog id="settings-modal" class="modal">
+            <div class="modal-content">
+                <h2>Settings</h2>
+                <div class="form-group">
+                    <label for="inp-initial-cash">Initial Cash</label>
+                    <input type="number" id="inp-initial-cash" value="1000">
+                </div>
+                <div class="form-group">
+                    <label for="inp-volatility">Volatility</label>
+                    <input type="number" id="inp-volatility" step="0.1" value="2.0">
+                </div>
+                <div class="form-group">
+                    <label for="inp-trend">Trend Bias</label>
+                    <input type="number" id="inp-trend" step="0.1" value="-0.5">
+                </div>
+                <div class="form-group">
+                    <label for="inp-interval">Update Interval (ms)</label>
+                    <input type="number" id="inp-interval" step="100" value="500">
+                </div>
+                <div class="modal-actions">
+                    <button id="btn-save-settings" class="btn buy">Save & Reset</button>
+                    <button id="btn-close-settings" class="btn sell">Cancel</button>
+                </div>
+            </div>
+        </dialog>
+    </div>
+    <script src="script.js"></script>
 </body>
 
 </html>
