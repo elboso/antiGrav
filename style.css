@@ -24,10 +24,10 @@ body {
     width: 100%;
     max-width: 800px;
     padding: 20px;
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
     height: 90vh;
+    display: grid;
+    grid-template-rows: auto 1fr auto auto;
+    gap: 20px;
 }
 
 header {
@@ -134,4 +134,235 @@ main {
 .config-display {
     text-align: center;
     color: rgba(255, 255, 255, 0.2);
+}
+
+/* Settings Button */
+.btn-icon {
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    cursor: pointer;
+    opacity: 0.5;
+    transition: opacity 0.2s;
+    padding: 0;
+}
+
+.btn-icon:hover {
+    opacity: 1;
+}
+
+/* Modal */
+.modal {
+    background: transparent;
+    border: none;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+    max-width: none;
+    max-height: none;
+    backdrop-filter: blur(5px);
+}
+
+.modal::backdrop {
+    background: rgba(0, 0, 0, 0.7);
+}
+
+.modal-content {
+    background: #1a1a1a;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 16px;
+    padding: 30px;
+    width: 90%;
+    max-width: 400px;
+    margin: 10vh auto;
+    color: var(--text-color);
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+}
+
+.modal-content h2 {
+    margin-top: 0;
+    margin-bottom: 20px;
+    text-align: center;
+    color: var(--accent-green);
+}
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 5px;
+    font-size: 0.9rem;
+    color: rgba(255, 255, 255, 0.7);
+}
+
+.form-group input {
+    width: 100%;
+    padding: 10px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 8px;
+    color: white;
+    font-family: inherit;
+    font-size: 1rem;
+    box-sizing: border-box;
+}
+
+.form-group input:focus {
+    outline: none;
+    border-color: var(--accent-green);
+}
+
+.modal-actions {
+    display: flex;
+    gap: 10px;
+    margin-top: 25px;
+}
+
+.modal-actions .btn {
+    font-size: 1rem;
+    padding: 10px;
+}
+
+/* Mobile Responsiveness */
+@media (max-width: 768px) {
+    .container {
+        height: 100vh;
+        padding: 10px;
+        gap: 10px;
+    }
+
+    header {
+        flex-direction: column;
+        gap: 15px;
+        padding: 15px;
+    }
+
+    .stats {
+        width: 100%;
+        justify-content: space-between;
+        gap: 0;
+    }
+
+    .stat-item {
+        align-items: center;
+    }
+
+    .label {
+        font-size: 0.6rem;
+    }
+
+    .value {
+        font-size: 1rem;
+    }
+
+    h1 {
+        font-size: 1rem;
+        width: 100%;
+        text-align: center;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .controls {
+        height: 60px;
+    }
+
+    .btn {
+        font-size: 1.2rem;
+    }
+
+    .config-display {
+        font-size: 0.8rem;
+    }
+}
+
+/* Juice Animations */
+@keyframes flash-green {
+    0% {
+        background-color: var(--bg-color);
+    }
+
+    10% {
+        background-color: rgba(0, 255, 136, 0.3);
+    }
+
+    100% {
+        background-color: var(--bg-color);
+    }
+}
+
+@keyframes flash-red {
+    0% {
+        background-color: var(--bg-color);
+    }
+
+    10% {
+        background-color: rgba(255, 0, 85, 0.3);
+    }
+
+    100% {
+        background-color: var(--bg-color);
+    }
+}
+
+@keyframes shake {
+    0% {
+        transform: translate(1px, 1px) rotate(0deg);
+    }
+
+    10% {
+        transform: translate(-1px, -2px) rotate(-1deg);
+    }
+
+    20% {
+        transform: translate(-3px, 0px) rotate(1deg);
+    }
+
+    30% {
+        transform: translate(3px, 2px) rotate(0deg);
+    }
+
+    40% {
+        transform: translate(1px, -1px) rotate(1deg);
+    }
+
+    50% {
+        transform: translate(-1px, 2px) rotate(-1deg);
+    }
+
+    60% {
+        transform: translate(-3px, 1px) rotate(0deg);
+    }
+
+    70% {
+        transform: translate(3px, 1px) rotate(-1deg);
+    }
+
+    80% {
+        transform: translate(-1px, -1px) rotate(1deg);
+    }
+
+    90% {
+        transform: translate(1px, 2px) rotate(0deg);
+    }
+
+    100% {
+        transform: translate(1px, -2px) rotate(-1deg);
+    }
+}
+
+.effect-win {
+    animation: flash-green 0.5s ease-out;
+}
+
+.effect-loss {
+    animation: flash-red 0.5s ease-out;
+    animation: shake 0.5s;
+}
+
+.effect-shake {
+    animation: shake 0.5s;
 }
