@@ -18,7 +18,49 @@ let state = {
     labels: []
 };
 
-// ... (DOM Elements skipped, they are fine)
+// DOM Elements
+const elCash = document.getElementById('cash-display');
+const elShares = document.getElementById('shares-display');
+const elPrice = document.getElementById('price-display');
+const elTrend = document.getElementById('trend-display');
+const elVol = document.getElementById('vol-display');
+const btnBuy = document.getElementById('btn-buy');
+const btnSell = document.getElementById('btn-sell');
+const ctx = document.getElementById('marketChart').getContext('2d');
+
+// Initialize Chart
+const chart = new Chart(ctx, {
+    type: 'line',
+    data: {
+        labels: state.labels,
+        datasets: [{
+            label: 'Market Price',
+            data: state.history,
+            borderColor: '#00ff88',
+            backgroundColor: 'rgba(0, 255, 136, 0.1)',
+            borderWidth: 2,
+            tension: 0.4,
+            pointRadius: 0,
+            fill: true
+        }]
+    },
+    options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+            legend: { display: false },
+            tooltip: { enabled: false }
+        },
+        scales: {
+            x: { display: false },
+            y: {
+                grid: { color: 'rgba(255, 255, 255, 0.05)' },
+                ticks: { color: 'rgba(255, 255, 255, 0.5)' }
+            }
+        },
+        animation: { duration: 0 }
+    }
+});
 
 // Helper Functions
 function formatMoney(amount) {
@@ -54,7 +96,28 @@ function updateUI() {
     btnSell.style.opacity = btnSell.disabled ? 0.5 : 1;
 }
 
-// ... (updatePrice and gameLoop skipped)
+function updatePrice() {
+    // Price Logic: Old Price + Random(-Vol, +Vol) + Trend
+    const randomChange = (Math.random() - 0.5) * 2 * CONFIG.volatility;
+    const change = randomChange + CONFIG.trend;
+
+    state.price += change;
+    if (state.price < 0.01) state.price = 0.01; // Prevent negative price
+
+    // Update History
+    state.history.push(state.price);
+    state.labels.push('');
+
+    if (state.history.length > CONFIG.maxHistory) {
+        state.history.shift();
+        state.labels.shift();
+    }
+}
+
+function gameLoop() {
+    updatePrice();
+    updateUI();
+}
 
 // Actions
 btnBuy.addEventListener('click', () => {
