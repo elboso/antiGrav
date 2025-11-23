@@ -1,0 +1,137 @@
+:root {
+    --bg-color: #0d0d0d;
+    --panel-bg: rgba(255, 255, 255, 0.05);
+    --text-color: #e0e0e0;
+    --accent-green: #00ff88;
+    --accent-red: #ff0055;
+    --font-family: 'Inter', sans-serif;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    font-family: var(--font-family);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    overflow: hidden;
+}
+
+.container {
+    width: 100%;
+    max-width: 800px;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    height: 90vh;
+}
+
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: var(--panel-bg);
+    padding: 15px 25px;
+    border-radius: 16px;
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+h1 {
+    margin: 0;
+    font-size: 1.2rem;
+    letter-spacing: 2px;
+    color: rgba(255, 255, 255, 0.5);
+}
+
+.stats {
+    display: flex;
+    gap: 30px;
+}
+
+.stat-item {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+}
+
+.label {
+    font-size: 0.7rem;
+    color: rgba(255, 255, 255, 0.4);
+    font-weight: bold;
+}
+
+.value {
+    font-size: 1.2rem;
+    font-weight: bold;
+    font-family: 'Courier New', monospace;
+}
+
+main {
+    flex-grow: 1;
+    background: var(--panel-bg);
+    border-radius: 16px;
+    padding: 20px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    position: relative;
+    display: flex;
+    flex-direction: column;
+}
+
+.chart-container {
+    flex-grow: 1;
+    position: relative;
+    width: 100%;
+    height: 100%;
+}
+
+.controls {
+    display: flex;
+    gap: 20px;
+    height: 80px;
+}
+
+.btn {
+    flex: 1;
+    border: none;
+    border-radius: 12px;
+    font-size: 1.5rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    text-transform: uppercase;
+    color: #000;
+}
+
+.btn:active {
+    transform: scale(0.98);
+}
+
+.buy {
+    background-color: var(--accent-green);
+    box-shadow: 0 0 20px rgba(0, 255, 136, 0.2);
+}
+
+.buy:hover {
+    background-color: #33ff99;
+    box-shadow: 0 0 30px rgba(0, 255, 136, 0.4);
+}
+
+.sell {
+    background-color: var(--accent-red);
+    box-shadow: 0 0 20px rgba(255, 0, 85, 0.2);
+}
+
+.sell:hover {
+    background-color: #ff3377;
+    box-shadow: 0 0 30px rgba(255, 0, 85, 0.4);
+}
+
+.config-display {
+    text-align: center;
+    color: rgba(255, 255, 255, 0.2);
+}

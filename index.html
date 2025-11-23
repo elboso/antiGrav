@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Market Simulator</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>MARKET SIM</h1>
+            <div class="stats">
+                <div class="stat-item">
+                    <span class="label">CASH</span>
+                    <span class="value" id="cash-display">$1000.00</span>
+                </div>
+                <div class="stat-item">
+                    <span class="label">SHARES</span>
+                    <span class="value" id="shares-display">0</span>
+                </div>
+                <div class="stat-item">
+                    <span class="label">PRICE</span>
+                    <span class="value" id="price-display">$100.00</span>
+                </div>
+            </div>
+        </header>
+
+        <main>
+            <div class="chart-container">
+                <canvas id="marketChart"></canvas>
+            </div>
+        </main>
+
+        <div class="controls">
+            <button id="btn-sell" class="btn sell">SELL</button>
+            <button id="btn-buy" class="btn buy">BUY</button>
+        </div>
+        
+        <div class="config-display">
+            <small>Trend: <span id="trend-display">0</span> | Volatility: <span id="vol-display">0</span></small>
+        </div>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
